@@ -1,4 +1,4 @@
-package fr.earthfight.launcher;
+package fr.earthfight.launcher; 
 
 import javax.swing.JFrame;
 
@@ -9,6 +9,7 @@ import fr.theshark34.swinger.util.WindowMover;
 public class LauncherFrame extends JFrame {
 	
 	private static LauncherFrame instance;
+	private LauncherPanel launcherPanel;
 	
 	public LauncherFrame () {
 		this.setTitle("EarthFight");
@@ -17,12 +18,18 @@ public class LauncherFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
 		this.setIconImage(Swinger.getResource("pack.png"));
+		this.setContentPane(launcherPanel = new LauncherPanel());
 		
 		WindowMover mover = new WindowMover(this);
 		this.addMouseListener(mover);
 		this.addMouseMotionListener(mover);
 		
 		this.setVisible(true);
+	}
+
+	private void setContentPane(LauncherPanel launcherPanel2) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public static void main(String[] args) {
@@ -33,7 +40,13 @@ public class LauncherFrame extends JFrame {
 	}
 	
 	public static LauncherFrame getInstance () {
+		
 		return instance;
+	}
+	
+	public LauncherPanel getLauncherPanel() {
+		
+		return this.launcherPanel;
 	}
 
 }
