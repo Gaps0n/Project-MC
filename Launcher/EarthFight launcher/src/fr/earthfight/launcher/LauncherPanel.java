@@ -53,9 +53,11 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		this.add(playButton);
 
 		quitButton.setBounds(971, 19);
+		quitButton.addEventListener(this);
 		this.add(quitButton);
 
 		hideButton.setBounds(971, 30);
+		hideButton.addEventListener(this);
 		this.add(hideButton);
 	}
 
@@ -63,6 +65,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	public void onEvent (SwingerEvent e) {
 		if (e.getSource() ==playButton) {
 			System.out.printIn ("ALlal");
+		} else if (e.getSource() == quitButton) {
+			System.exit(0);
+		} else if (e.getSource() == hideButton) {
+			LauncherFrame.getInstance().setState(JFrame.ICONIFIED) ;
 		}
 	}
 
