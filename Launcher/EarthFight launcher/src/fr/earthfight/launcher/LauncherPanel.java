@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.openlauncherlib.launcher.util.UsernameSaver;
 import fr.theshark34.swinger.Swinger;
-import fr.theshark34.swinger.Swinger.textured.STexturedButton;
-import fr.theshark34.swinger.Swinger.event.SwingerEventListener;
+import fr.theshark34.swinger.textured.STexturedButton;
 
 @SuppressWarnings("serial")
 public class LauncherPanel extends JPanel implements SwingerEventListener {
