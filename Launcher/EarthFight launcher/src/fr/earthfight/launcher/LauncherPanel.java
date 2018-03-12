@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import fr.theshark34.openauth.AuthenticationException;
+import fr.theshark34.swinger.colored.SColoredBar;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.openlauncherlib.launcher.util.UsernameSaver;
 import fr.theshark34.swinger.Swinger;
@@ -29,6 +30,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	private STexturedButton quitButton = new StexturedButton(Swinger.getResource("quit.png"));
 	private STexturedButton hideButton = new StexturedButton(Swinger.getResource("hide.png"));
 
+	private SColoredBar progressBar = new SColoredBar(getTransparentWhite(100), getTransparentWhite(10));
 	
 	public LauncherPanel() {
 		this.setLayout(null);
@@ -60,6 +62,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		hideButton.setBounds(971, 30);
 		hideButton.addEventListener(this);
 		this.add(hideButton);
+
+		
+		progressBar.setBounds(12, 12, 12, 12);
+		this.add(progressBar);
 	}
 
 	@Overide
@@ -80,7 +86,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 					try {
 						Launcher.auth(usernameField.getText(), passwordFieldField.getText());
 					} catch (AuthenticationException e) {
-						JOptionPane.showMessageDialog(this, "Impossible de se co :" + e.getErrorModel().getErrorMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(LauncherPanel.this, "Impossible de se co :" + e.getErrorModel().getErrorMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 						setFieldsEnabled(true);
 
 						return;
