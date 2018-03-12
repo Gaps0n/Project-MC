@@ -11,6 +11,7 @@ import fr.theshark34.openlauncherlib.launcher.GameInfos;
 import fr.theshark34.openlauncherlib.launcher.GameTweak;
 import fr.theshark34.openlauncherlib.launcher.GameType;
 import fr.theshark34.openlauncherlib.launcher.GameVersion;
+import fr.theshark34.supdate.SUpdate;
 
 public class Launcher {
 	
@@ -24,5 +25,9 @@ public class Launcher {
 		Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
 		AuthResponse response = new authenticator.authenticate(AuthAgent.MINECRAFT, username, password, "");
 		AuthInfos = new AuthInfos(response.getSelectedProfile().getName(), response.getAccessToken(), response.getSelectedProfile().getId());
+	}
+
+	public static void update() throws Exception {
+		SUpdate su = new SUpdate();
 	}
 }

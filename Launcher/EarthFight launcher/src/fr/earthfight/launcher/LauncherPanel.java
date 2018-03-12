@@ -31,8 +31,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	private STexturedButton hideButton = new StexturedButton(Swinger.getResource("hide.png"));
 
 	private SColoredBar progressBar = new SColoredBar(getTransparentWhite(100), getTransparentWhite(10));
+	private JLabel infoLabel = new JLabel("CLique");
 	
 	public LauncherPanel() {
+
 		this.setLayout(null);
 		
 		usernameField.setForeground(Color.WHITE);
@@ -63,9 +65,13 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		hideButton.addEventListener(this);
 		this.add(hideButton);
 
-		
+
 		progressBar.setBounds(12, 12, 12, 12);
 		this.add(progressBar);
+
+		infoLabel.setBounds(12, 12, 12, 12);
+		infoLabel.setForeground(Color.WHITE);
+		this.add(infoLabel);
 	}
 
 	@Overide
@@ -111,5 +117,14 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		usernameField.setEnabled(enabled);
 		passwordField.setEnabled(enabled);
 		playButton.setEnabled(enabled);
+	}
+
+	public SColoredBar getProgressBar() {
+
+		return progressBar;
+	}
+
+	public void setInfoText(String text) {
+		infoLabel.settext(text);
 	}
 }
