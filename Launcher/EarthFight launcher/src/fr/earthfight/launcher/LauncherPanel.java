@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import fr.theshark34.openauth.AuthenticationException;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.openlauncherlib.launcher.util.UsernameSaver;
 import fr.theshark34.swinger.Swinger;
@@ -63,8 +64,29 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 
 	@Overide
 	public void onEvent (SwingerEvent e) {
-		if (e.getSource() ==playButton) {
-			System.out.printIn ("ALlal");
+		if (e.getSource() == playButton) {
+			setFieldsEnabled(false);
+
+			if (usernameField.getText().replaceAll(" ", "").length() == 0 || passwordField.getText().length() == 0) {
+				JOptionPane.showMessageDialog(this, "Entre pseudo et mdp", "Erreur", JOptionPane.ERROR_MESSAGE);
+				setFieldsEnabled(true);
+
+				return;
+			}
+
+			Thread t = new Thread() {
+				@Override
+				public void run () {
+					try {
+						Launcher.auth(usernameField.getText(), passwordFieldField.getText());
+					} catch (AuthenticationException e) {
+						JOptionPane.showMessageDialog(this, "Impossible de se co :" + e.getErrorModel().getErrorMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+						setFieldsEnabled(true);
+
+						return;
+					}
+				}
+			}
 		} else if (e.getSource() == quitButton) {
 			System.exit(0);
 		} else if (e.getSource() == hideButton) {
@@ -77,5 +99,11 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		super.paintComponent(g);
 		
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+	}
+
+	private void setFieldsEnabled(boolean enabled) {
+		usernameField.setEnabled(enabled);
+		passwordField.setEnabled(enabled);
+		playButton.setEnabled(enabled);
 	}
 }
