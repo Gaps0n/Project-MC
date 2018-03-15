@@ -11,6 +11,7 @@ import fr.theshark34.openlauncherlib.launcher.GameInfos;
 import fr.theshark34.openlauncherlib.launcher.GameTweak;
 import fr.theshark34.openlauncherlib.launcher.GameType;
 import fr.theshark34.openlauncherlib.launcher.GameVersion;
+import fr.theshark34.supdate.BarAPI;
 import fr.theshark34.supdate.SUpdate;
 
 public class Launcher {
@@ -28,6 +29,8 @@ public class Launcher {
 	}
 
 	public static void update() throws Exception {
-		SUpdate su = new SUpdate();
+		SUpdate su = new SUpdate("http://", EF_DIR);
+        BarAPI.
+		su.start();
 	}
 }

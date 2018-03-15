@@ -1,4 +1,3 @@
-
 package fr.earthfight.launcher;
 
 import java.awt.Color;
@@ -31,7 +30,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	private STexturedButton hideButton = new StexturedButton(Swinger.getResource("hide.png"));
 
 	private SColoredBar progressBar = new SColoredBar(getTransparentWhite(100), getTransparentWhite(10));
-	private JLabel infoLabel = new JLabel("CLique");
+	private JLabel infoLabel = new JLabel(SwingConstants.CENTER);
 	
 	public LauncherPanel() {
 
@@ -69,8 +68,9 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		progressBar.setBounds(12, 12, 12, 12);
 		this.add(progressBar);
 
-		infoLabel.setBounds(12, 12, 12, 12);
+		infoLabel.setBounds(12, 17, 12, 17);
 		infoLabel.setForeground(Color.WHITE);
+		infoLabel.setFont(usernameField.getFont());
 		this.add(infoLabel);
 	}
 
@@ -98,7 +98,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 						return;
 					}
 				}
-			}
+			};
 		} else if (e.getSource() == quitButton) {
 			System.exit(0);
 		} else if (e.getSource() == hideButton) {
@@ -107,10 +107,9 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+	public void paintComponent(Graphics graphics) {
+		super.paintComponent(graphics);
+		drawFullsizedImage(graphics, this, background);
 	}
 
 	private void setFieldsEnabled(boolean enabled) {
