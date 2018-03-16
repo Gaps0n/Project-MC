@@ -124,6 +124,6 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	}
 
 	public void setInfoText(String text) {
-		infoLabel.settext(text);
+		infoLabel.setText(text);
 	}
 }

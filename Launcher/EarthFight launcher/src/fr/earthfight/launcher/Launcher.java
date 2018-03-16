@@ -13,6 +13,8 @@ import fr.theshark34.openlauncherlib.launcher.GameType;
 import fr.theshark34.openlauncherlib.launcher.GameVersion;
 import fr.theshark34.supdate.BarAPI;
 import fr.theshark34.supdate.SUpdate;
+import fr.theshark34.swinger.Swinger;
+import fr.theshark34.swinger.event.SwingerEvent;
 
 public class Launcher {
 	
@@ -30,7 +32,28 @@ public class Launcher {
 
 	public static void update() throws Exception {
 		SUpdate su = new SUpdate("http://", EF_DIR);
-        BarAPI.
+
+        	Thread t = new Thread() {
+
+				private int val;
+				private int max;
+
+        		@Override
+				public void run() {
+					while (this.isInterrupted()) {
+						val = (int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000);
+						val = (int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000);
+
+						LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setMaximum(max);
+						LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setValue(val);
+
+						LauncherFrame.getInstance().getLauncherPanel().getInfoText("Download" + BarAPI.getNumberOfDownloadedFiles() + "/" + BarAPI.getNumberOfFileToDownload()
+								+ Swinger.percentage(val, max) + "%");
+
+					}
+				}
+			};
+        t.start();
 		su.start();
 	}
 }
