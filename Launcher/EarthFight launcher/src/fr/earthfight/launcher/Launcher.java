@@ -14,7 +14,6 @@ import fr.theshark34.openlauncherlib.launcher.GameVersion;
 import fr.theshark34.supdate.BarAPI;
 import fr.theshark34.supdate.SUpdate;
 import fr.theshark34.swinger.Swinger;
-import fr.theshark34.swinger.event.SwingerEvent;
 
 public class Launcher {
 	
@@ -23,6 +22,7 @@ public class Launcher {
 	public static final File EF_DIR = EF_INFOS.getGameDir();
 
 	private static AuthInfos authInfos;
+	private static Thread updateThread;
 
 	public static void auth(username, password) throws AuthenticationException {
 		Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
@@ -33,7 +33,7 @@ public class Launcher {
 	public static void update() throws Exception {
 		SUpdate su = new SUpdate("http://", EF_DIR);
 
-        	Thread t = new Thread() {
+        	updateThread = new Thread() {
 
 				private int val;
 				private int max;
@@ -53,7 +53,13 @@ public class Launcher {
 					}
 				}
 			};
-        t.start();
+		updateThread.start();
+
 		su.start();
+		updateThread.interrupt();
+	}
+
+	public static void interruptThread() {
+		updateThread.interrupt();
 	}
 }
