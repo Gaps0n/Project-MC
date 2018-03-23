@@ -3,20 +3,17 @@ package fr.earthfight.launcher;
 import fr.theshark34.openauth.Authenticator;
 import fr.theshark34.openauth.AuthenticationException;
 import fr.theshark34.openauth.model.response.AuthResponse;
-import fr.theshark34.openlauncherlib.launcher.AuthInfos;
+import fr.theshark34.openlauncherlib.launcher.*;
+
 import java.io.File;
 
 import fr.theshark34.openauth.model.AuthAgent;
-import fr.theshark34.openlauncherlib.launcher.GameInfos;
-import fr.theshark34.openlauncherlib.launcher.GameTweak;
-import fr.theshark34.openlauncherlib.launcher.GameType;
-import fr.theshark34.openlauncherlib.launcher.GameVersion;
 import fr.theshark34.supdate.BarAPI;
 import fr.theshark34.supdate.SUpdate;
 import fr.theshark34.swinger.Swinger;
 
 public class Launcher {
-	
+
 	public static final GameVersion EF_VERSION = new GameVersion("1.7.10", GameType.V1_7_10);
 	public static final GameInfos EF_INFOS = new GameInfos("EarthFight", EF_VERSION, true, new GameTweak[] (GameTweak.FORGE));
 	public static final File EF_DIR = EF_INFOS.getGameDir();
@@ -33,33 +30,54 @@ public class Launcher {
 	public static void update() throws Exception {
 		SUpdate su = new SUpdate("http://", EF_DIR);
 
-        	updateThread = new Thread() {
+		updateThread = new Thread() {
 
-				private int val;
-				private int max;
+			private int val;
+			private int max;
 
-        		@Override
-				public void run() {
-					while (this.isInterrupted()) {
-						val = (int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000);
-						val = (int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000);
-
-						LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setMaximum(max);
-						LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setValue(val);
-
-						LauncherFrame.getInstance().getLauncherPanel().getInfoText("Download" + BarAPI.getNumberOfDownloadedFiles() + "/" + BarAPI.getNumberOfFileToDownload()
-								+ Swinger.percentage(val, max) + "%");
-
+			@Override
+			public void run() {
+				while (!this.isInterrupted()) {
+					if (BarAPI.getNumberOfFileToDownload() == 0) {
+						LauncherFrame.getInstance().getLauncherPanel().getInfoText("Verification");
+						continue;
 					}
+					val = (int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000);
+					max = (int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000);
+
+					LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setMaximum(max);
+					LauncherFrame.getInstance().getLauncherPanel().getProgressBar().setValue(val);
+
+					LauncherFrame.getInstance().getLauncherPanel().getInfoText("Download" + BarAPI.getNumberOfDownloadedFiles() + "/" + BarAPI.getNumberOfFileToDownload() + " " +
+							+ Swinger.percentage(val, max) + "%");
+
 				}
-			};
+			}
+		};
+
 		updateThread.start();
 
 		su.start();
 		updateThread.interrupt();
 	}
 
+	public static void launch() throws IOException {
+		GameLauncher gameLauncher = new GameLauncher(EF_INFOS, GameFolder.BASIC, authInfos);
+		process p = gameLauncher.launch();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		}
+		LauncherFrame.getInstance().setVisible(false);
+		try {
+			p.waitFor();
+		} catch (InterruptedException e) {
+		}
+		System.exit(0);
+	}
+
 	public static void interruptThread() {
+
 		updateThread.interrupt();
 	}
 }
