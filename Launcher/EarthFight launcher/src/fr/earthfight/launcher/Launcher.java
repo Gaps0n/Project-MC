@@ -54,6 +54,7 @@ public class Launcher {
 				}
 			}
 		};
+
 		updateThread.start();
 
 		su.start();
